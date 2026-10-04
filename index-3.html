@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d4e89">
+<title>Manba</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f2f5f6;--cd:#fff;--tx:#14213d;--mt:#5d6b7e;--ac:#1d4e89;--at:#fff;--bd:#d9e0e6;--hl:#f2b705;--er:#b3261e}
+@media(prefers-color-scheme:dark){:root:not([data-t=light]){--bg:#0f151c;--cd:#18212b;--tx:#e6ebf2;--mt:#93a1b3;--ac:#6fa8ff;--at:#0f151c;--bd:#2a3644}}
+:root[data-t=dark]{--bg:#0f151c;--cd:#18212b;--tx:#e6ebf2;--mt:#93a1b3;--ac:#6fa8ff;--at:#0f151c;--bd:#2a3644}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;display:flex;flex-direction:column;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,sans-serif;padding-top:env(safe-area-inset-top,0)}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bd)}
+header b{font:700 22px Georgia,serif;letter-spacing:.3px;flex:1}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.ib{background:none;border:1px solid var(--bd);border-radius:8px;padding:6px 10px}
+main{flex:1;min-height:0;position:relative}
+section{display:none;height:100%;overflow:auto;padding:14px}
+section.on{display:block}
+#v-chat.on{display:flex;flex-direction:column;padding:0}
+nav{display:flex;border-top:1px solid var(--bd);background:var(--cd);padding-bottom:env(safe-area-inset-bottom,0)}
+nav button{flex:1;background:none;border:0;padding:12px 4px;color:var(--mt);font-size:14px}
+nav button.on{color:var(--ac);font-weight:700;box-shadow:inset 0 3px 0 var(--ac)}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:12px}
+h2{font:700 18px Georgia,serif;margin:0 0 8px}
+label{display:block;font-size:14px;color:var(--mt);margin:10px 0 4px}
+input[type=text],input[type=password],textarea,select{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:9px}
+textarea{min-height:110px;resize:vertical}
+.pb{background:var(--ac);color:var(--at);border:0;border-radius:8px;padding:9px 14px;font-weight:600}
+.sb{background:none;border:1px solid var(--bd);border-radius:8px;padding:8px 12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.src{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--bd)}
+.src small{color:var(--mt)}
+.bar{display:flex;gap:6px;padding:8px 12px;border-bottom:1px solid var(--bd)}
+.bar select{flex:1}
+#msgs{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:88%;padding:9px 12px;border-radius:12px;background:var(--cd);border:1px solid var(--bd);overflow-wrap:anywhere}
+.m.u{align-self:flex-end;background:var(--ac);color:var(--at);border-color:var(--ac)}
+.m.e{border-color:var(--er);color:var(--er)}
+.ref{background:var(--hl);color:#14213d;border:0;border-radius:6px;min-width:22px;height:22px;font-size:12px;font-weight:700;margin:0 1px;vertical-align:baseline}
+.tts{background:none;border:0;padding:4px 0 0;font-size:13px;color:var(--mt)}
+.dots i{animation:bl 1.2s infinite;font-style:normal}
+.dots i:nth-child(3){animation-delay:.2s}.dots i:nth-child(4){animation-delay:.4s}
+@keyframes bl{0%,60%,100%{opacity:.2}30%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.dots i{animation:none}}
+#pan{display:none;margin:0 12px 8px;padding:10px;border-left:4px solid var(--hl);background:var(--cd);border-radius:8px;font-size:14px}
+#pan.on{display:block}
+.in{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--bd);background:var(--cd)}
+.in textarea{min-height:44px;height:44px;resize:none}
+.empty{color:var(--mt);text-align:center;padding:24px 8px}
+</style></head>
+<body>
+<header><b>Manba</b><button class="ib" id="th" aria-label="Mavzuni almashtirish">🌓</button></header>
+<main>
+<section id="v-src" class="on">
+ <div class="cd"><h2>Yangi manba</h2>
+  <label for="sn">Nomi</label><input type="text" id="sn" placeholder="Masalan: Tarix, 3-mavzu">
+  <label for="st">Matn</label><textarea id="st" placeholder="Matnni shu yerga qo'ying"></textarea>
+  <div class="row"><button class="pb" id="sa">Manba qo'shish</button>
+  <label class="sb" style="margin:0;color:inherit">Fayl yuklash (.txt, .md)<input type="file" id="sf" accept=".txt,.md,.csv,text/*" multiple hidden></label></div>
+ </div>
+ <div class="cd"><h2>Manbalaringiz</h2><div id="sl"></div></div>
+</section>
+<section id="v-chat">
+ <div class="bar"><select id="cs" aria-label="Suhbat"></select>
+  <button class="ib" id="cn" title="Yangi suhbat">＋</button><button class="ib" id="cr" title="Nomini o'zgartirish">✎</button><button class="ib" id="cd" title="O'chirish">🗑</button></div>
+ <div id="msgs" aria-live="polite"></div>
+ <div id="pan"></div>
+ <div class="in"><textarea id="q" placeholder="Manbalaringiz bo'yicha savol bering" rows="1"></textarea><button class="pb" id="sd">Yuborish</button></div>
+</section>
+<section id="v-set">
+ <div class="cd"><h2>AI ulanishi (OpenRouter)</h2>
+  <label for="k">API kalit</label><input type="password" id="k" autocomplete="off" placeholder="sk-or-...">
+  <label for="m">Asosiy model</label><input type="text" id="m" placeholder="model-nomi:free">
+  <label for="f">Zaxira modellar (vergul bilan)</label><input type="text" id="f">
+  <div class="row"><button class="pb" id="ff">Bepul modellarni topish</button><button class="sb" id="sv">Saqlash</button></div>
+  <p id="ms" style="color:var(--mt);font-size:14px;margin:8px 0 0"></p>
+ </div>
+ <div class="cd"><h2>AI xarakteri</h2>
+  <select id="ch"><option>do'stona</option><option>rasmiy</option><option>o'qituvchi</option></select></div>
+ <div class="cd"><h2>Zaxira nusxa</h2>
+  <div class="row"><button class="sb" id="ex">Eksport (JSON)</button>
+  <label class="sb" style="margin:0;color:inherit">Import<input type="file" id="im" accept=".json" hidden></label></div>
+  <p style="color:var(--mt);font-size:14px">Kalit eksportga kiritilmaydi. Ma'lumotlar faqat shu qurilmada saqlanadi.</p></div>
+</section>
+</main>
+<nav><button data-v="src" class="on">Manbalar</button><button data-v="chat">Suhbat</button><button data-v="set">Sozlamalar</button></nav>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let S={};try{S=JSON.parse(localStorage.getItem('manba_v1'))||{}}catch(e){}
+S.src=S.src||[];S.chats=S.chats||[];S.set=S.set||{key:'',model:'',fb:'',ch:"do'stona"};
+const save=()=>{try{localStorage.setItem('manba_v1',JSON.stringify(S))}catch(e){}};
+let busy=false;
+function newChat(){const c={id:Date.now(),t:'Yangi suhbat',m:[]};S.chats.unshift(c);S.cur=c.id;save()}
+if(!S.chats.length)newChat();
+const cur=()=>S.chats.find(c=>c.id==S.cur)||S.chats[0];
+if(S.theme)document.documentElement.dataset.t=S.theme;
+$('#th').onclick=()=>{const d=document.documentElement.dataset.t==='dark'||(!S.theme&&matchMedia('(prefers-color-scheme:dark)').matches);S.theme=d?'light':'dark';document.documentElement.dataset.t=S.theme;save()};
+function show(v){document.querySelectorAll('section').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+
+/* Manbalar */
+function drawSrc(){$('#sl').innerHTML=S.src.length?S.src.map((s,i)=>`<div class="src"><div>${esc(s.name)}<br><small>${s.text.length} belgi</small></div><button class="sb" data-d="${i}">O'chirish</button></div>`).join(''):'<div class="empty">Hozircha manba yo\'q. Yuqoriga matn qo\'shing.</div>'}
+$('#sl').onclick=e=>{const i=e.target.dataset.d;if(i!==undefined&&confirm("Manba o'chirilsinmi?")){S.src.splice(i,1);save();drawSrc()}};
+$('#sa').onclick=()=>{const t=$('#st').value.trim();if(!t){alert('Matn kiriting.');return}S.src.push({name:$('#sn').value.trim()||'Manba '+(S.src.length+1),text:t});$('#sn').value=$('#st').value='';save();drawSrc()};
+$('#sf').onchange=e=>{[...e.target.files].forEach(f=>{const r=new FileReader();r.onload=()=>{S.src.push({name:f.name,text:String(r.result)});save();drawSrc()};r.readAsText(f)});e.target.value=''};
+
+/* Qidiruv: matnni bo'laklarga bo'lish */
+function chunks(){const a=[];S.src.forEach(s=>{let buf='';const push=()=>{if(buf.trim())a.push({name:s.name,text:buf.trim()});buf=''};s.text.split(/\n+/).forEach(p=>{if(buf.length+p.length>900)push();while(p.length>900){a.push({name:s.name,text:p.slice(0,900)});p=p.slice(900)}buf+=p+'\n'});push()});return a}
+function pick(q){const all=chunks();const tot=all.reduce((n,c)=>n+c.text.length,0);let idx=all.map((_,i)=>i);
+ if(tot>14000){const w=q.toLowerCase().match(/[\p{L}\p{N}']{3,}/gu)||[];
+  idx=all.map((c,i)=>{const t=c.text.toLowerCase();return[w.reduce((n,x)=>n+(t.includes(x)?1:0),0),i]}).sort((a,b)=>b[0]-a[0]).slice(0,8).map(x=>x[1]).sort((a,b)=>a-b)}
+ return idx.map((i,k)=>({n:k+1,name:all[i].name,text:all[i].text}))}
+
+/* Suhbat */
+function fmt(m,i){let h=esc(m.c).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+ if(m.refs)h=h.replace(/\[(\d+)\]/g,(x,n)=>m.refs[n]?`<button class="ref" data-i="${i}" data-n="${n}" aria-label="Manba ${n}">${n}</button>`:x);
+ if(m.r==='a'&&!m.e)h+=`<br><button class="tts" data-s="${i}">🔊 O'qib ber</button>`;return h}
+function draw(){const c=cur();
+ $('#cs').innerHTML=S.chats.map(x=>`<option value="${x.id}"${x.id==c.id?' selected':''}>${esc(x.t)}</option>`).join('');
+ $('#msgs').innerHTML=(c.m.length?'':'<div class="empty">Manbalar bo\'limiga matn qo\'shing, so\'ng savol bering. Javoblar faqat manbadan olinadi.</div>')
+  +c.m.map((m,i)=>`<div class="m ${m.e?'e':m.r}">${fmt(m,i)}</div>`).join('')
+  +(busy?'<div class="m a"><span class="dots">Yozmoqda<i>.</i><i>.</i><i>.</i></span></div>':'');
+ $('#msgs').scrollTop=1e9}
+$('#cs').onchange=e=>{S.cur=+e.target.value;save();$('#pan').className='';draw()};
+$('#cn').onclick=()=>{newChat();draw()};
+$('#cr').onclick=()=>{const t=prompt('Yangi nom:',cur().t);if(t){cur().t=t.slice(0,40);save();draw()}};
+$('#cd').onclick=()=>{if(!confirm("Suhbat o'chirilsinmi?"))return;S.chats=S.chats.filter(c=>c.id!=S.cur);if(!S.chats.length)newChat();S.cur=S.chats[0].id;save();draw()};
+$('#msgs').onclick=e=>{const b=e.target;
+ if(b.dataset.n){const r=cur().m[b.dataset.i].refs[b.dataset.n];$('#pan').textContent=r;$('#pan').className='on'}
+ if(b.dataset.s){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(cur().m[b.dataset.s].c.replace(/\[\d+\]/g,''));u.lang='uz-UZ';speechSynthesis.speak(u)}};
+$('#pan').onclick=()=>$('#pan').className='';
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+$('#sd').onclick=send;
+async function send(){const q=$('#q').value.trim();if(!q||busy)return;const s=S.set,c=cur();
+ if(!s.key||!s.model){alert('Avval Sozlamalarda API kalit va modelni kiriting.');show('set');return}
+ c.m.push({r:'u',c:q});if(c.t==='Yangi suhbat')c.t=q.slice(0,30);$('#q').value='';
+ if(!S.src.length){c.m.push({r:'a',c:"Avval Manbalar bo'limiga manba qo'shing."});save();draw();return}
+ busy=true;save();draw();
+ const refs=pick(q);
+ const sys=`Sen "Manba" o'quv yordamchisisan. Xarakter: ${s.ch}. Faqat o'zbek tilida javob ber. FAQAT quyidagi MANBALAR asosida javob ber, o'zingdan hech narsa qo'shma. Har bir fikr oxiriga manba raqamini [n] ko'rinishida yoz. Javob manbalarda bo'lmasa, aynan shunday de: "Bu haqda manbalarda ma'lumot yo'q."\n\nMANBALAR:\n`+refs.map(x=>`[${x.n}] (${x.name}) ${x.text}`).join('\n\n');
+ const hist=c.m.filter(m=>!m.e).slice(-7).map(m=>({role:m.r==='u'?'user':'assistant',content:m.c}));
+ try{const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+s.key,'X-Title':'Manba'},
+   body:JSON.stringify({models:[s.model,...s.fb.split(',').map(x=>x.trim()).filter(Boolean)],messages:[{role:'system',content:sys},...hist]})});
+  const d=await r.json();if(!r.ok||!d.choices)throw new Error((d.error&&d.error.message)||('Xato '+r.status));
+  c.m.push({r:'a',c:d.choices[0].message.content||'(bo\'sh javob)',refs:Object.fromEntries(refs.map(x=>[x.n,x.name+': '+x.text]))});
+ }catch(err){c.m.push({r:'a',e:1,c:'Xatolik: '+err.message+". Kalit va modelni tekshiring yoki zaxira model qo'shing."})}
+ busy=false;save();draw()}
+
+/* Sozlamalar */
+function drawSet(){$('#k').value=S.set.key;$('#m').value=S.set.model;$('#f').value=S.set.fb;$('#ch').value=S.set.ch}
+$('#sv').onclick=()=>{S.set={key:$('#k').value.trim(),model:$('#m').value.trim(),fb:$('#f').value.trim(),ch:$('#ch').value};save();$('#ms').textContent='Saqlandi.'};
+$('#ch').onchange=()=>{S.set.ch=$('#ch').value;save()};
+$('#ff').onclick=async()=>{$('#ms').textContent='Qidirilmoqda...';
+ try{const d=await (await fetch('https://openrouter.ai/api/v1/models')).json();
+  const f=d.data.filter(m=>m.id.endsWith(':free')).sort((a,b)=>(b.context_length||0)-(a.context_length||0)).slice(0,4).map(m=>m.id);
+  if(!f.length)throw new Error("bepul model topilmadi");
+  $('#m').value=f[0];$('#f').value=f.slice(1).join(', ');$('#ms').textContent='Topildi: '+f.join(', ')+". Saqlash tugmasini bosing."
+ }catch(e){$('#ms').textContent='Xatolik: '+e.message}};
+$('#ex').onclick=()=>{const o={src:S.src,chats:S.chats,set:{...S.set,key:''}};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));a.download='manba-zaxira.json';a.click()};
+$('#im').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);S.src=o.src||[];S.chats=o.chats||[];if(o.set)S.set={...o.set,key:S.set.key};if(!S.chats.length)newChat();S.cur=S.chats[0].id;save();drawSrc();drawSet();draw();alert('Import qilindi.')}catch(x){alert("Fayl noto'g'ri.")}};r.readAsText(f)};
+drawSrc();drawSet();draw();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
