@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="uz" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050810">
+<meta name="description" content="Manba — Chegarasiz bilim, cheksiz imkoniyat. Aqlli oʻquv platformasi.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Manba">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>Manba — Chegarasiz bilim, cheksiz imkoniyat</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════════ INTRO: QUM ANIMATSIYASI (8 soniya, har safar) ═══════════════ -->
+<div id="intro" role="dialog" aria-label="Manba kirish animatsiyasi">
+  <canvas id="sandCanvas" aria-hidden="true"></canvas>
+  <div class="intro-title" id="introTitle">MANBA</div>
+  <div class="intro-sub" id="introSub">Chegarasiz bilim, cheksiz imkoniyat</div>
+  <button id="introSkip" type="button" aria-label="Oʻtkazib yuborish">Oʻtkazib yuborish</button>
+</div>
+
+<!-- ═══════════════ ONBOARDING (bir marta koʻrinadi) ═══════════════ -->
+<div id="onboarding" hidden role="dialog" aria-label="Tanishtiruv slaydlari">
+  <div class="onboard-slide" data-s="0">
+    <span class="onboard-icon" aria-hidden="true">📚</span>
+    <h2 class="onboard-title" data-i18n="ob1t">Manbalar</h2>
+    <p class="onboard-desc" data-i18n="ob1d">PDF, Word, PowerPoint, rasm, veb-havola yoki matn — har biri 30 MB gacha. Hammasi faqat shu qurilmada saqlanadi.</p>
+  </div>
+  <div class="onboard-slide" data-s="1">
+    <span class="onboard-icon" aria-hidden="true">✧</span>
+    <h2 class="onboard-title" data-i18n="ob2t">AI oʻquvchi</h2>
+    <p class="onboard-desc" data-i18n="ob2d">AI faqat siz yuklagan manbalar asosida javob beradi. Har bir fikrga manba raqami qoʻyiladi.</p>
+  </div>
+  <div class="onboard-slide" data-s="2">
+    <span class="onboard-icon" aria-hidden="true">☷</span>
+    <h2 class="onboard-title" data-i18n="ob3t">Test laboratoriyasi</h2>
+    <p class="onboard-desc" data-i18n="ob3d">Manbangizdan avtomatik test savollari tuziladi. 5, 10 yoki 15 ta — oʻzingiz tanlaysiz.</p>
+  </div>
+  <div class="onboard-slide" data-s="3">
+    <span class="onboard-icon" aria-hidden="true">▣</span>
+    <h2 class="onboard-title" data-i18n="ob4t">Flashcardlar</h2>
+    <p class="onboard-desc" data-i18n="ob4d">Faol eslash usuli (Leitner tizimi) bilan xotirani mustahkamlang. Har kuni avtomatik takrorlash jadvali.</p>
+  </div>
+  <div class="onboard-slide" data-s="4">
+    <span class="onboard-icon" aria-hidden="true">⏱</span>
+    <h2 class="onboard-title" data-i18n="ob5t">Fokus va reja</h2>
+    <p class="onboard-desc" data-i18n="ob5d">Pomodoro taymeri, vazifalar roʻyxati va kunlik maqsadlar. Statistika bilan oʻsishingizni kuzating.</p>
+  </div>
+  <div class="onboard-slide" data-s="5">
+    <span class="onboard-icon" aria-hidden="true">🪐</span>
+    <h2 class="onboard-title" data-i18n="ob6t">Xush kelibsiz!</h2>
+    <p class="onboard-desc" data-i18n="ob6d">Manba — chegarasiz bilim, cheksiz imkoniyat. Oʻrganishni boshlaymiz!</p>
+  </div>
+  <div class="onboard-dots" id="onboardDots" aria-hidden="true"></div>
+  <button id="onboardNext" type="button" data-i18n="obNext">Keyingisi</button>
+  <button id="onboardSkip" type="button" data-i18n="obSkip">Oʻtkazib yuborish</button>
+</div>
+
+<!-- ═══════════════ ASOSIY ILOVA ═══════════════ -->
+<div id="app" hidden>
+
+  <!-- ─── Sidebar (faqat desktop) ─── -->
+  <aside class="sidebar" aria-label="Asosiy navigatsiya">
+    <div class="brand" id="brandBtn" role="button" tabindex="0">
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <span class="brand-text">MANBA</span>
+    </div>
+<div class="nav-group" data-i18n="navMain">Asosiy</div>
+    <button class="nav-item on" data-view="home" type="button">
+      <span class="ni" aria-hidden="true">◎</span><span data-i18n="nHome">Bosh sahifa</span>
+    </button>
+    <button class="nav-item" data-view="library" type="button">
+      <span class="ni" aria-hidden="true">📚</span><span data-i18n="nLib">Kutubxona</span>
+    </button>
+    <button class="nav-item" data-view="ai" type="button">
+      <span class="ni" aria-hidden="true">✧</span><span data-i18n="nAI">AI oʻquvchi</span>
+    </button>
+    <button class="nav-item" data-view="quiz" type="button">
+      <span class="ni" aria-hidden="true">☷</span><span data-i18n="nQuiz">Test</span>
+    </button>
+    <button class="nav-item" data-view="cards" type="button">
+      <span class="ni" aria-hidden="true">▣</span><span data-i18n="nCards">Kartalar</span>
+    </button>
+
+    <div class="nav-group" data-i18n="navExtra">Samaradorlik</div>
+    <button class="nav-item" data-view="planner" type="button">
+      <span class="ni" aria-hidden="true">⏱</span><span data-i18n="nPlan">Reja va fokus</span>
+    </button>
+    <button class="nav-item" data-view="tools" type="button">
+      <span class="ni" aria-hidden="true">⚒</span><span data-i18n="nTools">Vositalar</span>
+    </button>
+    <button class="nav-item" data-view="progress" type="button">
+      <span class="ni" aria-hidden="true">▥</span><span data-i18n="nProg">Natijalarim</span>
+    </button>
+    <button class="nav-item" data-view="settings" type="button">
+      <span class="ni" aria-hidden="true">⚙</span><span data-i18n="nSet">Sozlamalar</span>
+    </button>
+
+    <div class="sidebar-foot">
+      <div class="storage-badge" id="storageBadge" title="Xotira holati">💾 <span id="storageText">...</span></div>
+      <div data-i18n="sideFoot">Bepul · Maʼlumotlar qurilmada saqlanadi</div>
+    </div>
+  </aside>
+
+  <!-- ─── Header ─── -->
+  <header class="header">
+    <h1>
+      <small id="pageEyebrow" data-i18n="eyebrow">MANBA · STUDY OS</small>
+      <span id="pageTitle" data-i18n="pHomeT">Bilim markazingiz</span>
+    </h1>
+    <button class="ib" id="themeBtn" type="button" title="Mavzu" aria-label="Mavzuni almashtirish">🌓</button>
+    <select id="langSel" class="ib" aria-label="Til">
+      <option value="uz">UZ</option>
+      <option value="en">EN</option>
+      <option value="ru">RU</option>
+    </select>
+  </header>
+
+  <!-- ─── Main ─── -->
+  <main class="main" id="mainScroll">
+
+    <!-- ═══ BOSH SAHIFA ═══ -->
+    <section class="view on" id="view-home">
+      <div class="jupiter-scene" id="jupiterScene">
+        <canvas id="starfield" aria-hidden="true"></canvas>
+
+        <h2 class="scene-title">
+          <small data-i18n="sceneKicker">MANBA · KOINOT SINFI</small>
+          <span data-i18n="sceneTitle">Bilim olamiga xush kelibsiz</span>
+        </h2>
+        <p class="scene-desc" data-i18n="sceneDesc">Yupiter va uning yoʻldoshlari ortida — sizning bilimlaringiz. Oʻrganishni boshlang.</p>
+        <div class="scene-actions">
+          <button class="btn primary" data-goto="ai" type="button" data-i18n="sceneBtn1">✧ Oʻrganishni boshlash</button>
+        </div>
+
+        <!-- Yupiter + yoʻldoshlar -->
+        <div class="jupiter-wrap" id="jupiterWrap">
+          <div class="jupiter" aria-hidden="true">
+            <div class="jupiter-bands"></div>
+            <div class="jupiter-spot"></div>
+            <div class="jupiter-shade"></div>
+          </div>
+
+          <div class="orbit" style="--r:130px;--dur:16s;--ms:10px;--tilt:.32;--t0:-2s">
+            <div class="moon moon--io" aria-label="Io">
+              <span class="moon-label" data-moon="io">Io</span>
+            </div>
+          </div>
+          <div class="orbit" style="--r:185px;--dur:26s;--ms:9px;--tilt:.30;--t0:-9s">
+<div class="moon moon--europa" aria-label="Yevropa">
+              <span class="moon-label" data-moon="europa">Yevropa</span>
+            </div>
+          </div>
+          <div class="orbit" style="--r:245px;--dur:40s;--ms:14px;--tilt:.26;--t0:-4s">
+            <div class="moon moon--ganymede" aria-label="Ganimed">
+              <span class="moon-label" data-moon="ganymede">Ganimed</span>
+            </div>
+          </div>
+          <div class="orbit" style="--r:305px;--dur:60s;--ms:12px;--tilt:.22;--t0:-20s">
+            <div class="moon moon--callisto" aria-label="Kallisto">
+              <span class="moon-label" data-moon="callisto">Kallisto</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boshqa sayyoralar -->
+        <div class="planet planet--saturn" aria-label="Saturn" title="Saturn">
+          <span class="planet-label" data-planet="saturn">Saturn</span>
+        </div>
+        <div class="planet planet--earth" aria-label="Yer" title="Yer">
+          <span class="planet-label" data-planet="earth">Yer</span>
+        </div>
+        <div class="planet planet--mars" aria-label="Mars" title="Mars">
+          <span class="planet-label" data-planet="mars">Mars</span>
+        </div>
+      </div>
+
+      <!-- Statistika -->
+      <div class="stats-grid">
+        <div class="cd stat">
+          <b id="stSources">0</b>
+          <small data-i18n="stSrc">Manbalar</small>
+        </div>
+        <div class="cd stat">
+          <b id="stQuizzes">0</b>
+          <small data-i18n="stQz">Testlar</small>
+        </div>
+        <div class="cd stat">
+          <b id="stCards">0</b>
+          <small data-i18n="stCd">Kartalar</small>
+        </div>
+        <div class="cd stat">
+          <b id="stMinutes">0</b>
+          <small data-i18n="stMin">Daqiqa</small>
+        </div>
+      </div>
+
+      <!-- Tezkor harakatlar -->
+      <div class="cd">
+        <h3 data-i18n="quickTitle">⚡ Tezkor harakatlar</h3>
+        <div class="quick-grid">
+          <button class="quick" data-goto="library" type="button">
+            <span class="qi" aria-hidden="true">📂</span>
+            <b data-i18n="q1t">Manba yuklash</b>
+            <small data-i18n="q1d">PDF, Word, rasm — 30 MB gacha</small>
+          </button>
+          <button class="quick" data-goto="ai" type="button">
+            <span class="qi" aria-hidden="true">✧</span>
+            <b data-i18n="q2t">AI bilan oʻrganish</b>
+            <small data-i18n="q2d">Manbalaringizdan javob oling</small>
+          </button>
+          <button class="quick" data-goto="quiz" type="button">
+            <span class="qi" aria-hidden="true">☷</span>
+            <b data-i18n="q3t">Test tuzish</b>
+            <small data-i18n="q3d">Bilimni sinab koʻring</small>
+          </button>
+          <button class="quick" data-goto="cards" type="button">
+            <span class="qi" aria-hidden="true">▣</span>
+            <b data-i18n="q4t">Flashcardlar</b>
+            <small data-i18n="q4d">Xotirani mustahkamlang</small>
+          </button>
+          <button class="quick" data-goto="planner" type="button">
+            <span class="qi" aria-hidden="true">⏱</span>
+            <b data-i18n="q5t">Fokus taymeri</b>
+            <small data-i18n="q5d">Pomodoro va vazifalar</small>
+          </button>
+          <button class="quick" data-goto="tools" type="button">
+            <span class="qi" aria-hidden="true">⚒</span>
+            <b data-i18n="q6t">Vositalar</b>
+            <small data-i18n="q6d">Xulosa, tarjima, kod</small>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ KUTUBXONA ═══ -->
+    <section class="view" id="view-library">
+      <div class="cd">
+        <h2 data-i18n="libTitle">📚 Shaxsiy kutubxona</h2>
+
+        <label for="sn" data-i18n="libName">Nomi</label>
+        <input id="sn" type="text" autocomplete="off">
+
+        <label for="st" data-i18n="libText">Matn</label>
+        <textarea id="st"></textarea>
+<div class="row">
+          <button class="btn primary" id="sa" type="button" data-i18n="libAdd">＋ Manba qoʻshish</button>
+          <label class="file-label">
+            <span aria-hidden="true">📎</span>
+            <span data-i18n="libFile">Fayl yuklash (30 MB gacha)</span>
+            <input type="file" id="sf" multiple hidden
+              accept=".txt,.md,.csv,.pdf,.docx,.pptx,.json,image/*,text/*,application/pdf">
+          </label>
+        </div>
+
+        <label for="su" data-i18n="libURL">Veb-havola</label>
+        <div class="row">
+          <input id="su" type="text" placeholder="https://..." style="flex:1" autocomplete="off">
+          <button class="btn ghost" id="sua" type="button" data-i18n="libURLBtn">Qoʻshish</button>
+        </div>
+
+        <p class="mt" id="sm" style="margin:8px 0 0"></p>
+      </div>
+
+      <div class="cd">
+        <input id="sq" type="search" autocomplete="off">
+        <div id="sl" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+    <!-- ═══ AI CHAT ═══ -->
+    <section class="view" id="view-ai">
+      <div class="cd">
+        <div class="row" style="margin:0 0 12px 0;flex-wrap:nowrap">
+          <select id="cs" style="flex:1;min-width:0" aria-label="Suhbat"></select>
+          <button class="mini" id="cn" type="button" title="Yangi suhbat">＋</button>
+          <button class="mini" id="cr" type="button" title="Nomini oʻzgartirish">✎</button>
+          <button class="mini danger" id="cdel" type="button" title="Oʻchirish">🗑</button>
+        </div>
+
+        <div id="msgs" aria-live="polite"></div>
+
+        <div id="pan" hidden role="button" tabindex="0"></div>
+
+        <div class="row" style="margin-top:14px;flex-wrap:nowrap;align-items:flex-end">
+          <textarea id="q" rows="1" style="min-height:52px;flex:1;resize:none"></textarea>
+          <button class="btn primary" id="sd" type="button" data-i18n="sendBtn">Yuborish</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TEST ═══ -->
+    <section class="view" id="view-quiz">
+      <div class="cd">
+        <h2 data-i18n="quizTitle">☷ Test laboratoriyasi</h2>
+
+        <label for="ts" data-i18n="quizSrc">Manba</label>
+        <select id="ts" class="srcsel"></select>
+
+        <label for="tn" data-i18n="quizCount">Savollar soni</label>
+        <select id="tn">
+          <option>5</option>
+          <option selected>10</option>
+          <option>15</option>
+        </select>
+
+        <label for="tz" data-i18n="quizTopic">Mavzu (ixtiyoriy)</label>
+        <input id="tz" type="text" autocomplete="off">
+
+        <div class="row">
+          <button class="btn primary" id="tg" type="button" data-i18n="quizMake">Test tuzish</button>
+        </div>
+        <p class="mt" id="tm" style="margin:8px 0 0"></p>
+      </div>
+
+      <div id="tq"></div>
+    </section>
+
+    <!-- ═══ FLASHCARDS ═══ -->
+    <section class="view" id="view-cards">
+      <div class="cd">
+        <h2 data-i18n="cardsTitle">▣ Flashcardlar</h2>
+
+        <label for="fs" data-i18n="cardsSrc">Manba</label>
+        <select id="fs" class="srcsel"></select>
+
+        <label for="fq" data-i18n="cardsTopic">Mavzu (ixtiyoriy)</label>
+        <input id="fq" type="text" autocomplete="off">
+
+        <div class="row">
+          <button class="btn primary" id="fg" type="button" data-i18n="cardsMake">Kartalar yaratish</button>
+          <button class="btn turq" id="fst" type="button" data-i18n="cardsStart">Takrorlashni boshlash</button>
+          <button class="btn ghost" id="fdel" type="button" data-i18n="cardsDel">Hammasini oʻchirish</button>
+        </div>
+        <p class="mt" id="fm" style="margin:8px 0 0"></p>
+      </div>
+
+      <div id="fa"></div>
+    </section>
+
+    <!-- ═══ REJA VA FOKUS ═══ -->
+    <section class="view" id="view-planner">
+      <div class="grid2">
+        <div class="cd">
+          <h2 data-i18n="timerTitle">⏱ Fokus taymeri</h2>
+<label for="timerMode" data-i18n="timerModeLabel">Rejim</label>
+          <select id="timerMode">
+            <option value="25" data-i18n="timerF25">Fokus — 25 daqiqa</option>
+            <option value="50" data-i18n="timerF50">Chuqur — 50 daqiqa</option>
+            <option value="5" data-i18n="timerB5">Qisqa tanaffus — 5 daq</option>
+            <option value="15" data-i18n="timerB15">Uzun tanaffus — 15 daq</option>
+          </select>
+
+          <div class="timer" id="timerDisplay">25:00</div>
+          <div class="progress"><span id="timerBar" style="width:0"></span></div>
+
+          <div class="row">
+            <button class="btn primary" id="tStart" type="button" data-i18n="timerStart">▶ Boshlash</button>
+            <button class="btn ghost" id="tPause" type="button" data-i18n="timerPause">⏸ Pauza</button>
+            <button class="btn ghost" id="tReset" type="button" data-i18n="timerReset">↺ Qayta</button>
+          </div>
+        </div>
+
+        <div class="cd">
+          <h2 data-i18n="taskTitle">☷ Vazifalar</h2>
+          <input id="taskIn" type="text" autocomplete="off">
+          <div class="row">
+            <button class="btn primary" id="taskAdd" type="button" data-i18n="taskAdd">＋ Qoʻshish</button>
+          </div>
+          <div id="taskList" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ VOSITALAR ═══ -->
+    <section class="view" id="view-tools">
+      <div class="cd">
+        <h2 data-i18n="toolsTitle">⚒ Oʻquv vositalari</h2>
+        <div class="toolbar" id="toolChips"></div>
+
+        <label for="tis" data-i18n="toolsSrc">Manba</label>
+        <select id="tis" class="srcsel"></select>
+
+        <label for="ti" data-i18n="toolsExtra">Qoʻshimcha (til, mavzu...)</label>
+        <textarea id="ti" style="min-height:70px"></textarea>
+
+        <div class="row">
+          <button class="btn primary" id="tr" type="button" data-i18n="toolsRun">Bajarish</button>
+        </div>
+        <p class="mt" id="tom" style="margin:8px 0 0"></p>
+      </div>
+
+      <div class="cd" id="tob" hidden>
+        <div id="to" style="white-space:pre-wrap;line-height:1.7"></div>
+        <div class="row">
+          <button class="btn ghost" id="tt" type="button" data-i18n="toolsListen">🔊 Eshitish</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ NATIJALARIM ═══ -->
+    <section class="view" id="view-progress">
+      <div class="stats-grid">
+        <div class="cd stat"><b id="pg1">0</b><small data-i18n="pg1">Kun ketma-ket</small></div>
+        <div class="cd stat"><b id="pg2">0</b><small data-i18n="pg2">Bugun</small></div>
+        <div class="cd stat"><b id="pg3">0</b><small data-i18n="pg3">Xatolar</small></div>
+        <div class="cd stat"><b id="pg4">0</b><small data-i18n="pg4">Kartalar</small></div>
+      </div>
+
+      <div class="cd">
+        <h3 data-i18n="pgGoal">Kunlik maqsad</h3>
+        <div class="progress"><span id="goalBar" style="width:0"></span></div>
+        <p class="mt" id="goalText">0 / 20</p>
+      </div>
+
+      <div class="cd">
+        <h3 data-i18n="pgWeek">Haftalik faollik</h3>
+        <div class="activity" id="wk"></div>
+      </div>
+
+      <div class="cd">
+        <h3 data-i18n="pgWrong">Xatolar tarixi</h3>
+        <div id="wl"></div>
+      </div>
+    </section>
+
+    <!-- ═══ SOZLAMALAR ═══ -->
+    <section class="view" id="view-settings">
+      <div class="cd">
+        <h2 data-i18n="setAI">AI ulanishi (OpenRouter)</h2>
+
+        <label for="k" data-i18n="setKey">API kalit</label>
+        <input id="k" type="password" autocomplete="off" placeholder="sk-or-...">
+
+        <label for="m" data-i18n="setModel">Model</label>
+        <input id="m" type="text" placeholder="model-nomi:free" autocomplete="off">
+
+        <label for="f" data-i18n="setFb">Zaxira modellar (vergul bilan)</label>
+        <input id="f" type="text" autocomplete="off">
+
+        <label for="ep" data-i18n="setEp">API manzil (ixtiyoriy, oʻz proxy uchun)</label>
+        <input id="ep" type="text" placeholder="https://..." autocomplete="off">
+<label for="g" data-i18n="setGoal">Kunlik maqsad (javoblar)</label>
+        <input id="g" type="number" min="1" value="20">
+
+        <div class="row">
+          <button class="btn primary" id="sv" type="button" data-i18n="setSave">Saqlash</button>
+          <button class="btn ghost" id="ff" type="button" data-i18n="setFree">Bepul modellarni topish</button>
+        </div>
+        <p class="mt" id="ms" style="margin:8px 0 0"></p>
+      </div>
+
+      <div class="cd">
+        <h2 data-i18n="setName">Ismingiz</h2>
+        <input id="un" type="text" autocomplete="off">
+      </div>
+
+      <div class="cd">
+        <h2 data-i18n="setStorage">Xotira holati</h2>
+        <div class="progress"><span id="storageBar" style="width:0"></span></div>
+        <p class="mt" id="storageInfo">...</p>
+        <div class="row">
+          <button class="btn ghost" id="persistBtn" type="button" data-i18n="setPersist">Doimiy xotira soʻrash</button>
+        </div>
+      </div>
+
+      <div class="cd">
+        <h2 data-i18n="setBackup">Zaxira nusxa</h2>
+        <div class="row">
+          <button class="btn ghost" id="ex" type="button" data-i18n="setExport">⬇ Eksport (JSON)</button>
+          <label class="file-label">
+            <span aria-hidden="true">⬆</span>
+            <span data-i18n="setImport">Import</span>
+            <input type="file" id="im" accept=".json" hidden>
+          </label>
+        </div>
+        <p class="mt" data-i18n="setBackupNote" style="margin:8px 0 0">API kalit eksportga kirmaydi.</p>
+        <div class="row">
+          <button class="btn danger" id="rs" type="button" data-i18n="setReset">Barcha maʼlumotni oʻchirish</button>
+        </div>
+      </div>
+
+      <div class="cd">
+        <h2 data-i18n="setInstall">Ilova sifatida oʻrnatish</h2>
+        <p class="mt" data-i18n="setInstallNote">Brauzer menyusidan "Oʻrnatish" yoki "Add to Home Screen" tanlang. Chrome, Edge, Safari qoʻllab-quvvatlaydi.</p>
+        <div class="row">
+          <button class="btn primary" id="installBtn" type="button" data-i18n="setInstallBtn">📲 Oʻrnatish</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── Mobil pastki navigatsiya ─── -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobil navigatsiya">
+    <button class="on" data-view="home" type="button">
+      <span aria-hidden="true">◎</span><span data-i18n="mHome">Bosh</span>
+    </button>
+    <button data-view="library" type="button">
+      <span aria-hidden="true">📚</span><span data-i18n="mLib">Manba</span>
+    </button>
+    <button data-view="ai" type="button">
+      <span aria-hidden="true">✧</span><span data-i18n="mAI">AI</span>
+    </button>
+    <button data-view="quiz" type="button">
+      <span aria-hidden="true">☷</span><span data-i18n="mQuiz">Test</span>
+    </button>
+    <button data-view="cards" type="button">
+      <span aria-hidden="true">▣</span><span data-i18n="mCards">Karta</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- Toast -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- App JS -->
+<script src="app.js" defer></script>
+
+</body>
+</html>
