@@ -1,0 +1,41 @@
+/* MANBA 6.0 — kosmik dizayn qatlami (styles.css ustiga yuklanadi, logikaga ta’sir qilmaydi) */
+:root{--accent:#a78bfa;--accent2:#60a5fa;--accent3:#f0abfc;--line:rgba(167,139,250,.2);--glow:rgba(139,92,246,.35)}
+html[data-theme="light"]{--accent:#6d4fe0;--accent2:#2f7fd6;--accent3:#c026d3;--line:rgba(109,79,224,.2);--glow:rgba(109,79,224,.18)}
+
+.brand-mark{background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:#fff;box-shadow:0 0 28px rgba(139,92,246,.55)}
+.brand strong{background:linear-gradient(90deg,#fff,#c4b5fd 55%,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{color:#c4b5fd;letter-spacing:.14em}
+.hero h1 span,.dashboard-copy h2 span{background:linear-gradient(90deg,#c4b5fd,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.btn-primary,.send-btn{background:linear-gradient(135deg,#8b5cf6,#6366f1 55%,#3b82f6);color:#fff;border:0;box-shadow:0 10px 30px rgba(139,92,246,.35)}
+.btn-primary:hover,.send-btn:hover{filter:brightness(1.1)}
+.goal-track span,.bar-fill{background:linear-gradient(90deg,#8b5cf6,#38bdf8)}
+
+.panel,.goal-panel,.home-stat,.chat-panel,.settings-side{border-color:rgba(167,139,250,.2);background:linear-gradient(160deg,rgba(22,18,52,.82),rgba(9,12,30,.78));box-shadow:0 18px 50px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)}
+.panel:hover{border-color:rgba(167,139,250,.36)}
+.action-card,.tool-card{border-color:rgba(167,139,250,.24)}
+.action-card:hover,.tool-card:hover{box-shadow:0 18px 40px rgba(139,92,246,.26)}
+.home-stat strong{color:#fff}
+.home-bottom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+
+html[data-theme="light"] .panel,html[data-theme="light"] .goal-panel,html[data-theme="light"] .home-stat,html[data-theme="light"] .chat-panel,html[data-theme="light"] .settings-side{background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(243,240,255,.88));box-shadow:0 14px 40px rgba(60,40,140,.12)}
+html[data-theme="light"] .tabs{background:rgba(255,255,255,.85)}
+
+/* Ish stoli (desktop): chap tomonda vertikal navigatsiya, o‘ngda kontent */
+@media(min-width:901px){
+  .app-shell{width:min(1480px,100% - 40px);display:grid;grid-template-columns:236px minmax(0,1fr);grid-template-areas:"top top" "side hero" "side main" "side foot";column-gap:22px;align-items:start}
+  .topbar{grid-area:top}
+  .hero{grid-area:hero;margin-top:14px}
+  main{grid-area:main;min-width:0}
+  .footer{grid-area:foot}
+  .tabs{grid-area:side;position:sticky;top:18px;flex-direction:column;overflow:visible;margin:0;padding:14px 10px;gap:4px;border-radius:24px;background:linear-gradient(180deg,rgba(20,14,50,.88),rgba(8,12,30,.84));box-shadow:0 0 60px rgba(139,92,246,.14)}
+  .tabs .tab{width:100%;text-align:left;padding:11px 14px;border-radius:14px;color:var(--muted);background:transparent;font-size:14px}
+  .tabs .tab:hover{background:rgba(167,139,250,.1);color:var(--text)}
+  .tabs .tab.active{background:linear-gradient(90deg,rgba(139,92,246,.95),rgba(99,102,241,.65));color:#fff;box-shadow:0 8px 24px rgba(139,92,246,.35)}
+}
+
+@media(max-width:760px){
+  .mobile-nav{background:rgba(12,10,32,.86);border:1px solid rgba(167,139,250,.25);border-radius:24px;backdrop-filter:blur(20px);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+  .mobile-nav .tab.active span{background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-radius:14px;box-shadow:0 0 22px rgba(139,92,246,.6)}
+  .home-bottom-grid{grid-template-columns:1fr}
+}
