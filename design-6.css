@@ -1,0 +1,74 @@
+/* MANBA 6.0 — kosmik dizayn qatlami (styles.css ustiga yuklanadi, logikaga ta’sir qilmaydi) */
+:root{--accent:#a78bfa;--accent2:#60a5fa;--accent3:#f0abfc;--line:rgba(167,139,250,.2);--glow:rgba(139,92,246,.35)}
+html[data-theme="light"]{--accent:#6d4fe0;--accent2:#2f7fd6;--accent3:#c026d3;--line:rgba(109,79,224,.2);--glow:rgba(109,79,224,.18)}
+
+.brand-mark{background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:#fff;box-shadow:0 0 28px rgba(139,92,246,.55)}
+.brand strong{background:linear-gradient(90deg,#fff,#c4b5fd 55%,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{color:#c4b5fd;letter-spacing:.14em}
+.hero h1 span,.dashboard-copy h2 span{background:linear-gradient(90deg,#c4b5fd,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.btn-primary,.send-btn{background:linear-gradient(135deg,#8b5cf6,#6366f1 55%,#3b82f6);color:#fff;border:0;box-shadow:0 10px 30px rgba(139,92,246,.35)}
+.btn-primary:hover,.send-btn:hover{filter:brightness(1.1)}
+.goal-track span,.bar-fill{background:linear-gradient(90deg,#8b5cf6,#38bdf8)}
+
+.panel,.goal-panel,.home-stat,.chat-panel,.settings-side{border-color:rgba(167,139,250,.2);background:linear-gradient(160deg,rgba(22,18,52,.82),rgba(9,12,30,.78));box-shadow:0 18px 50px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)}
+.panel:hover{border-color:rgba(167,139,250,.36)}
+.action-card,.tool-card{border-color:rgba(167,139,250,.24)}
+.action-card:hover,.tool-card:hover{box-shadow:0 18px 40px rgba(139,92,246,.26)}
+.home-stat strong{color:#fff}
+.home-bottom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+
+html[data-theme="light"] .panel,html[data-theme="light"] .goal-panel,html[data-theme="light"] .home-stat,html[data-theme="light"] .chat-panel,html[data-theme="light"] .settings-side{background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(243,240,255,.88));box-shadow:0 14px 40px rgba(60,40,140,.12)}
+html[data-theme="light"] .tabs{background:rgba(255,255,255,.85)}
+
+/* Ish stoli (desktop): chap tomonda vertikal navigatsiya, o‘ngda kontent */
+@media(min-width:901px){
+  .app-shell{width:min(1480px,100% - 40px);display:grid;grid-template-columns:236px minmax(0,1fr);grid-template-areas:"top top" "side hero" "side main" "side foot";column-gap:22px;align-items:start}
+  .topbar{grid-area:top}
+  .hero{grid-area:hero;margin-top:14px}
+  main{grid-area:main;min-width:0}
+  .footer{grid-area:foot}
+  .tabs{grid-area:side;position:sticky;top:18px;flex-direction:column;overflow:visible;margin:0;padding:14px 10px;gap:4px;border-radius:24px;background:linear-gradient(180deg,rgba(20,14,50,.88),rgba(8,12,30,.84));box-shadow:0 0 60px rgba(139,92,246,.14)}
+  .tabs .tab{width:100%;text-align:left;padding:11px 14px;border-radius:14px;color:var(--muted);background:transparent;font-size:14px}
+  .tabs .tab:hover{background:rgba(167,139,250,.1);color:var(--text)}
+  .tabs .tab.active{background:linear-gradient(90deg,rgba(139,92,246,.95),rgba(99,102,241,.65));color:#fff;box-shadow:0 8px 24px rgba(139,92,246,.35)}
+}
+
+@media(max-width:760px){
+  .mobile-nav{background:rgba(12,10,32,.86);border:1px solid rgba(167,139,250,.25);border-radius:24px;backdrop-filter:blur(20px);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+  .mobile-nav .tab.active span{background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-radius:14px;box-shadow:0 0 22px rgba(139,92,246,.6)}
+  .home-bottom-grid{grid-template-columns:1fr}
+}
+
+/* Qo‘shimcha funksiyalar va kalendar */
+.feature-section{margin:22px 0 8px}
+.feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.feature-card{text-align:left;display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:18px;border:1px solid rgba(167,139,250,.22);background:linear-gradient(145deg,rgba(21,20,60,.7),rgba(9,12,30,.6));color:var(--text);transition:transform .18s ease,box-shadow .18s ease}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(139,92,246,.25)}
+.feature-card span{font-size:20px;color:var(--accent);width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:rgba(139,92,246,.16);margin-bottom:6px}
+.feature-card strong{font-size:14px}
+.feature-card small{color:var(--muted);font-size:12px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px;text-align:center}
+.cal-dow{font-size:11px;color:var(--muted);padding:4px 0}
+.cal-day,.cal-empty{aspect-ratio:1;display:grid;place-items:center;font-size:12px;border-radius:9px}
+.cal-day{background:rgba(167,139,250,.08)}
+.cal-today{background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;font-weight:700;box-shadow:0 0 16px rgba(139,92,246,.6)}
+@media(min-width:1100px){.home-bottom-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1099px) and (min-width:761px){.home-bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.feature-grid{gap:9px}.feature-card{padding:12px}}
+
+/* AI vositalar (PDF chat, rasm, ovoz) */
+.tools-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.tool-panel{display:flex;flex-direction:column;gap:10px;min-width:0}
+.tool-panel h3{margin:0}
+.pdfchat-log{min-height:220px;max-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:14px;border:1px solid var(--line);background:rgba(5,8,20,.35)}
+.pdf-msg{max-width:88%;padding:9px 12px;border-radius:14px;white-space:pre-wrap;word-break:break-word;font-size:14px;line-height:1.5}
+.pdf-user{align-self:flex-end;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff}
+.pdf-assistant{align-self:flex-start;background:rgba(167,139,250,.12);border:1px solid var(--line)}
+.pdf-error{color:var(--danger)}
+.pdfchat-form{display:grid;grid-template-columns:1fr auto;gap:8px}
+.vision-preview{width:100%;max-height:260px;object-fit:contain;border-radius:14px;border:1px solid var(--line)}
+.tool-output{min-height:90px;max-height:360px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(5,8,20,.35);font-size:14px;line-height:1.6}
+.tool-output:empty{display:none}
+@media(max-width:1000px){.tools-grid{grid-template-columns:1fr}}

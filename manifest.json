@@ -1,0 +1,25 @@
+{
+  "name": "Manba AI 6.0 — Cosmic Education",
+  "short_name": "Manba AI",
+  "description": "Talabalar va o‘qituvchilar uchun kosmik dizayndagi AI ta’lim platformasi.",
+  "lang": "uz",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070b16",
+  "theme_color": "#62e6bf",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
